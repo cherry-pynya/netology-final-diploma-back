@@ -14,6 +14,7 @@ const Role = require('../Models/Role');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const express_validator_1 = require("express-validator");
+const config_1 = require("../config");
 class authControler {
     registration(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,18 +44,37 @@ class authControler {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, password } = req.body;
-                const admin = yield Admin.findOne({ name });
+                const { login, password } = req.body;
+                const admin = yield Admin.findOne({ login });
                 if (!admin) {
-                    return res.status(400).json({ message: `Пользователь ${name} не найден!` });
+                    return res.status(400).json({ message: `Пользователь ${login} не найден!` });
                 }
-                console.log(admin);
                 const validPassword = bcrypt.compareSync(password, admin.password);
                 if (!validPassword) {
                     return res.status(400).json({ message: `Введен неверный пароль!` });
                 }
                 const token = generateAccesToken(admin._id, admin.role);
                 return res.json({ token });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Ошибка входа!' });
+            }
+        });
+    }
+    checkToken(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { token } = req.body;
+                const payload = jwt.decode(token);
+                const { id } = payload;
+                const admin = yield Admin.findOne({ _id: id });
+                if (!admin) {
+                    return res.status(400).json({ message: `Пользователь не найден!` });
+                }
+                ;
+                const newToken = generateAccesToken(admin._id, admin.role);
+                return res.json({ newToken });
             }
             catch (e) {
                 console.log(e);
@@ -69,8 +89,7 @@ function generateAccesToken(id, roles) {
         id,
         roles
     };
-    const secret = process.env.ACESS_KEY || 'RANDOM_KEY';
-    return jwt.sign(payload, secret, {
+    return jwt.sign(payload, config_1.secret, {
         expiresIn: '24h'
     });
 }
