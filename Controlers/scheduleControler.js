@@ -34,6 +34,43 @@ class scheduleControler {
             }
         });
     }
+    createHall(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { number } = req.body;
+                const exist = yield Hall.findOne({ number: number });
+                if (exist) {
+                    return res.status(400).json({ message: 'Зал с таким номером уже существует!' });
+                }
+                ;
+                const hall = new Hall({ number });
+                yield hall.save();
+                return res.json({ message: 'Зал сохранен!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось создать зал!' });
+            }
+        });
+    }
+    deleteHall(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { _id } = req.body;
+                const hall = yield Hall.findOne({ _id });
+                if (!hall) {
+                    return res.status(400).json({ message: 'Зала с таким номером не существует!' });
+                }
+                ;
+                yield hall.deleteOne();
+                return res.json({ message: 'Зал удален!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось удалить зал!' });
+            }
+        });
+    }
 }
 exports.default = scheduleControler;
 ;

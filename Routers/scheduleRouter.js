@@ -8,4 +8,6 @@ const scheduleControler_1 = __importDefault(require("../Controlers/scheduleContr
 const router = new Router();
 const controler = new scheduleControler_1.default();
 router.get('/schedule', controler.getSchedule);
+router.post('/createHall', controler.createHall);
+router.post('/deleteHall', controler.deleteHall);
 module.exports = router;
