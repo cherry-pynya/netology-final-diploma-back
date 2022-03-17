@@ -69,6 +69,46 @@ class scheduleControler {
                 console.log(e);
                 return res.status(400).json({ message: 'Не удалось удалить зал!' });
             }
+            ;
+        });
+    }
+    ;
+    saveHallConfig(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { halls } = req.body;
+                halls.forEach((el) => __awaiter(this, void 0, void 0, function* () {
+                    const { _id } = el;
+                    yield Hall.replaceOne({ _id }, el);
+                }));
+                return res.json({ message: 'Конфигурация залов сохранена!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось сохранить конфигурацию залов!' });
+            }
+            ;
+        });
+    }
+    ;
+    addMovie(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { name, length } = req.body;
+                const candidate = yield Movie.findOne({ name });
+                if (candidate) {
+                    return res.status(400).json({ message: 'Фильм с таким именем уже существует!' });
+                }
+                ;
+                const movie = new Movie({ name, length });
+                yield movie.save();
+                return res.json({ message: 'Фильм сохранен!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось сохранить фильм!' });
+            }
+            ;
         });
     }
 }
