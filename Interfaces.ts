@@ -1,5 +1,5 @@
 export interface HallInterface{
-    _id: string,
+    _id?: string,
     number: number,
     row: number,
     col: number,
@@ -9,6 +9,14 @@ export interface HallInterface{
 };
 
 export interface MovieInterface{
+    _id?: string,
     name: string,
     length: number
+};
+
+export interface ShowTimeInterface {
+    _id?: string,
+    time: string,
+    hall: HallInterface,
+    movie: MovieInterface
 };

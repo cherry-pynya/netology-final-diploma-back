@@ -20,7 +20,7 @@ class scheduleControler {
                 const halls = yield Hall.find();
                 const movies = yield Movie.find();
                 const showTimes = yield ShowTime.find();
-                const sellingStatus = yield SellingStatus.find();
+                const sellingStatus = yield SellingStatus.findOne({ _id: '6230d2c4722f153e9886e137' });
                 return res.json({
                     halls,
                     movies,
@@ -111,6 +111,47 @@ class scheduleControler {
             ;
         });
     }
+    ;
+    saveShowTimes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { showTimes } = req.body;
+                showTimes.forEach((el) => __awaiter(this, void 0, void 0, function* () {
+                    if ('_id' in el) {
+                        const _id = el['_id'];
+                        yield ShowTime.replaceOne({ _id }, el);
+                    }
+                    else {
+                        const st = new ShowTime(el);
+                        yield st.save();
+                    }
+                    ;
+                }));
+                return res.json({ message: 'Расписание сеансов сохранено!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось сохранить расписание сеансов!' });
+            }
+            ;
+        });
+    }
+    ;
+    changeSellingStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { status } = req.body;
+                yield SellingStatus.updateOne({ _id: '6230d2c4722f153e9886e137' }, { status });
+                return res.json({ message: 'Стаиус продажи билетов изменен!' });
+            }
+            catch (e) {
+                console.log(e);
+                return res.status(400).json({ message: 'Не удалось изменить статус продажи билетов!' });
+            }
+            ;
+        });
+    }
+    ;
 }
 exports.default = scheduleControler;
 ;

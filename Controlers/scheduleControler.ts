@@ -2,7 +2,7 @@ const Hall = require('../Models/Hall');
 const Movie = require('../Models/Movie');
 const ShowTime = require('../Models/ShowTime');
 const SellingStatus = require('../Models/sellingStatus');
-import {HallInterface, MovieInterface} from '../Interfaces';
+import {HallInterface, MovieInterface, ShowTimeInterface} from '../Interfaces';
 
 
 export default class scheduleControler {
@@ -11,7 +11,7 @@ export default class scheduleControler {
             const halls = await Hall.find();
             const movies = await Movie.find();
             const showTimes = await ShowTime.find();
-            const sellingStatus = await SellingStatus.find();
+            const sellingStatus = await SellingStatus.findOne({_id: '6230d2c4722f153e9886e137'});
             return res.json({
                 halls,
                 movies,
@@ -83,5 +83,35 @@ export default class scheduleControler {
             console.log(e);
             return res.status(400).json({message: 'Не удалось сохранить фильм!'});
         };
-    }
+    };
+
+    public async saveShowTimes(req: any, res: any): Promise<void>  {
+        try {
+            const { showTimes }: {showTimes: Array<ShowTimeInterface>} = req.body;
+            showTimes.forEach(async (el) => {
+                if ('_id' in el) {
+                    const _id = el['_id'];
+                    await ShowTime.replaceOne({_id}, el);
+                } else {
+                    const st = new ShowTime(el);
+                    await st.save();
+                };
+            });
+            return res.json({message: 'Расписание сеансов сохранено!'});
+        } catch(e) {
+            console.log(e);
+            return res.status(400).json({message: 'Не удалось сохранить расписание сеансов!'});
+        };
+    };
+
+    public async changeSellingStatus(req: any, res: any): Promise<void>  {
+        try {
+            const { status }: {status: boolean} = req.body;
+            await SellingStatus.updateOne({_id: '6230d2c4722f153e9886e137'}, {status});
+            return res.json({message: 'Стаиус продажи билетов изменен!'});
+        } catch(e) {
+            console.log(e);
+            return res.status(400).json({message: 'Не удалось изменить статус продажи билетов!'});
+        };
+    };
 };

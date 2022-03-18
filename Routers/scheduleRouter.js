@@ -10,6 +10,8 @@ const router = new Router();
 const controler = new scheduleControler_1.default();
 router.get('/schedule', controler.getSchedule);
 router.post('/saveHallConfig', authMidlleware, controler.saveHallConfig);
+router.post('/saveShowTimes', authMidlleware, controler.saveShowTimes);
+router.post('/changeSellingStatus', authMidlleware, controler.changeSellingStatus);
 router.post('/addMovie', authMidlleware, controler.addMovie);
 router.post('/createHall', authMidlleware, controler.createHall);
 router.post('/deleteHall', authMidlleware, controler.deleteHall);
