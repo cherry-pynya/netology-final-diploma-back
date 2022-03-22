@@ -20,3 +20,12 @@ export interface ShowTimeInterface {
     hall: HallInterface,
     movie: MovieInterface
 };
+
+export interface CustomerEventInterface {
+    _id: string,
+    date: string,
+    time: string
+    movie: MovieInterface,
+    hall: HallInterface,
+    showTime: string,
+};
