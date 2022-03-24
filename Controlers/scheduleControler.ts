@@ -10,6 +10,7 @@ import {
   ShowTimeInterface,
 } from "../Interfaces";
 import moment from "moment";
+import "moment/locale/ru";
 import scheduleMaintance from "../scheduleMaintce";
 
 export default class scheduleControler {
@@ -184,7 +185,6 @@ async function createCustomerEvent(
   showTime: ShowTimeInterface,
   _id: string
 ): Promise<void> {
-  moment.locale("ru");
   for (let i = 0; i < 7; i++) {
     const {
       movie,

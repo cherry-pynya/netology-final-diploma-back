@@ -18,6 +18,7 @@ const ShowTime = require("../Models/ShowTime");
 const SellingStatus = require("../Models/sellingStatus");
 const CustomerEvent = require("../Models/CustomerEvent");
 const moment_1 = __importDefault(require("moment"));
+require("moment/locale/ru");
 const scheduleMaintce_1 = __importDefault(require("../scheduleMaintce"));
 class scheduleControler {
     getSchedule(req, res) {
@@ -202,7 +203,6 @@ class scheduleControler {
 exports.default = scheduleControler;
 function createCustomerEvent(showTime, _id) {
     return __awaiter(this, void 0, void 0, function* () {
-        moment_1.default.locale("ru");
         for (let i = 0; i < 7; i++) {
             const { movie, hall, time, } = showTime;
             const date = (0, moment_1.default)(i).add(i, "days").format("L");
