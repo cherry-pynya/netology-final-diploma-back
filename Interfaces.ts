@@ -29,3 +29,9 @@ export interface CustomerEventInterface {
     hall: HallInterface,
     showTime: string,
 };
+
+export interface OrderItem {
+    row: number,
+    seat: number,
+    letter: string
+};

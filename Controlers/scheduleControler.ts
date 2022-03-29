@@ -8,6 +8,7 @@ import {
   HallInterface,
   MovieInterface,
   ShowTimeInterface,
+  OrderItem
 } from "../Interfaces";
 import moment from "moment";
 import "moment/locale/ru";
@@ -155,7 +156,7 @@ export default class scheduleControler {
     try {
       const { _id }: { _id: string } = req.body;
       await ShowTime.deleteOne({ _id });
-      console.log(_id)
+      console.log(_id);
       await CustomerEvent.deleteMany({ showTime: _id });
       return res.json({ message: "Сеанс удален!" });
     } catch (e) {
@@ -179,7 +180,20 @@ export default class scheduleControler {
         .json({ message: "Не удалось изменить статус продажи билетов!" });
     }
   }
-}
+
+  public async buyTicket(req: any, res: any): Promise<void> {
+    try {
+      const { order, hallForm }: { order: Array<OrderItem>, hallForm: HallInterface } = req.body;
+      console.log(order);
+      console.log(hallForm);
+    } catch (e) {
+      console.log(e);
+      return res
+        .status(400)
+        .json({ message: "Не удалось купить билет!" });
+    }
+  };
+};
 
 async function createCustomerEvent(
   showTime: ShowTimeInterface,

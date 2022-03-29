@@ -199,8 +199,25 @@ class scheduleControler {
             }
         });
     }
+    buyTicket(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { order, hallForm } = req.body;
+                console.log(order);
+                console.log(hallForm);
+            }
+            catch (e) {
+                console.log(e);
+                return res
+                    .status(400)
+                    .json({ message: "Не удалось купить билет!" });
+            }
+        });
+    }
+    ;
 }
 exports.default = scheduleControler;
+;
 function createCustomerEvent(showTime, _id) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < 7; i++) {

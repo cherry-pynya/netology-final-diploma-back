@@ -14,5 +14,6 @@ router.post('/changeSellingStatus', authMidlleware, controler.changeSellingStatu
 router.post('/addMovie', authMidlleware, controler.addMovie)
 router.post('/createHall', authMidlleware, controler.createHall);
 router.post('/deleteHall', authMidlleware, controler.deleteHall);
+router.post('/buyTicket', controler.buyTicket);
 
 module.exports = router;
