@@ -17,6 +17,7 @@ const Movie = require("../Models/Movie");
 const ShowTime = require("../Models/ShowTime");
 const SellingStatus = require("../Models/sellingStatus");
 const CustomerEvent = require("../Models/CustomerEvent");
+const Ticket = require("../Models/Ticket");
 const moment_1 = __importDefault(require("moment"));
 require("moment/locale/ru");
 const scheduleMaintce_1 = __importDefault(require("../scheduleMaintce"));
@@ -199,12 +200,25 @@ class scheduleControler {
             }
         });
     }
+    //покупка билета
+    //сохраняем в базу билет
+    //меняем конфигурацию зала в CustomerEvent
     buyTicket(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { order, hallForm } = req.body;
-                console.log(order);
-                console.log(hallForm);
+                //создаем в базе экземпдяр билета
+                const ticket = new Ticket({ order, CustomerEvent: hallForm._id });
+                //меняем в базе массив мест CustomerEvent
+                order.forEach((el) => {
+                    const { row, seat } = el;
+                    hallForm.hall.seats[row][seat] = 't';
+                });
+                //await Hall.replaceOne({ _id }, el);
+                const { _id } = hallForm;
+                yield CustomerEvent.replaceOne({ _id }, hallForm);
+                yield ticket.save();
+                return res.json({ message: "Билет куплен!", ticket });
             }
             catch (e) {
                 console.log(e);

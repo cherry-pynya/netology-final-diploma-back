@@ -30,9 +30,9 @@ function start() {
         try {
             yield mongoose.connect(url);
             app.listen(port, () => console.log(`server started on port ${port}`));
-            setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                yield (0, scheduleMaintce_1.default)();
-            }), 60000);
+            setInterval(() => {
+                (0, scheduleMaintce_1.default)();
+            }, 10000);
         }
         catch (e) {
             console.log(e);

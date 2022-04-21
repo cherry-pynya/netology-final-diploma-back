@@ -18,9 +18,9 @@ async function start(): Promise<void> {
     try {
         await mongoose.connect(url);
         app.listen(port, () => console.log(`server started on port ${port}`));
-        setInterval(async () => {
-            await scheduleMaintance();
-        }, 60000)
+        setInterval(() => {
+            scheduleMaintance();
+        }, 10000)
     } catch(e) {
         console.log(e);
     }

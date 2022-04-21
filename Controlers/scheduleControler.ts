@@ -3,12 +3,16 @@ const Movie = require("../Models/Movie");
 const ShowTime = require("../Models/ShowTime");
 const SellingStatus = require("../Models/sellingStatus");
 const CustomerEvent = require("../Models/CustomerEvent");
+const Ticket = require("../Models/Ticket");
+
 
 import {
   HallInterface,
   MovieInterface,
   ShowTimeInterface,
-  OrderItem
+  OrderItem,
+  CustomerEventInterface,
+  Ticket
 } from "../Interfaces";
 import moment from "moment";
 import "moment/locale/ru";
@@ -181,11 +185,24 @@ export default class scheduleControler {
     }
   }
 
+  //покупка билета
+  //сохраняем в базу билет
+  //меняем конфигурацию зала в CustomerEvent
   public async buyTicket(req: any, res: any): Promise<void> {
     try {
-      const { order, hallForm }: { order: Array<OrderItem>, hallForm: HallInterface } = req.body;
-      console.log(order);
-      console.log(hallForm);
+      const { order, hallForm }: { order: Array<OrderItem>, hallForm: CustomerEventInterface } = req.body;
+      //создаем в базе экземпдяр билета
+      const ticket = new Ticket({order, CustomerEvent: hallForm._id});
+      //меняем в базе массив мест CustomerEvent
+      order.forEach((el: OrderItem) => {
+        const { row , seat }: {row: number, seat: number} = el;
+        hallForm.hall.seats[row][seat] = 't';
+      });
+      //await Hall.replaceOne({ _id }, el);
+      const { _id } : { _id: string} = hallForm;
+      await CustomerEvent.replaceOne({_id}, hallForm);
+      await ticket.save();
+      return res.json({ message: "Билет куплен!", ticket });
     } catch (e) {
       console.log(e);
       return res

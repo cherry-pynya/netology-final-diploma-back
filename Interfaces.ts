@@ -35,3 +35,15 @@ export interface OrderItem {
     seat: number,
     letter: string
 };
+
+interface Seat {
+    row: number,
+    seat: number,
+    letter: string,
+};
+
+export interface Ticket {
+    order: Array<Seat>,
+    CustomerEvent: string,
+    _id?: string,
+};
