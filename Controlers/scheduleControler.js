@@ -218,7 +218,7 @@ class scheduleControler {
                 const { _id } = hallForm;
                 yield CustomerEvent.replaceOne({ _id }, hallForm);
                 yield ticket.save();
-                return res.json({ message: "Билет куплен!", ticket });
+                return res.json({ ticket });
             }
             catch (e) {
                 console.log(e);

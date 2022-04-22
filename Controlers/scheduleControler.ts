@@ -202,7 +202,7 @@ export default class scheduleControler {
       const { _id } : { _id: string} = hallForm;
       await CustomerEvent.replaceOne({_id}, hallForm);
       await ticket.save();
-      return res.json({ message: "Билет куплен!", ticket });
+      return res.json({ ticket });
     } catch (e) {
       console.log(e);
       return res
